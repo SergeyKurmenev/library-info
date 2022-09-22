@@ -41,21 +41,25 @@ public class DBPrepareHelper implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        int userAdditionalFieldCount = 1;
+        int bookAdditionalFieldCount = 1;
+        int borrowInfoAdditionalFieldCount = 2;
+
         // populate USERS table
         populate(usersCsvPath,
                 userRepository,
                 Converters.STRING_ARRAY_TO_USER,
-                User.class.getDeclaredFields().length - 1);
+                User.class.getDeclaredFields().length - userAdditionalFieldCount);
         // populate BOOKS table
         populate(booksCsvPath,
                 bookRepository,
                 Converters.STRING_ARRAY_TO_BOOK,
-                Book.class.getDeclaredFields().length - 1);
+                Book.class.getDeclaredFields().length - bookAdditionalFieldCount);
         // populate BORROWED_INFO table
         populate(borrowInfoCsvPath,
                 borrowedInfoRepository,
                 Converters.STRING_ARRAY_TO_BORROW_INFO,
-                BorrowInfo.class.getDeclaredFields().length - 2);
+                BorrowInfo.class.getDeclaredFields().length - borrowInfoAdditionalFieldCount);
         //match user to borrow-info and add additional foreign key to BORROW_INFO table
         setupBorrowerId();
     }
