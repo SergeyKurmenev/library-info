@@ -18,6 +18,7 @@ public class BorrowInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long borrowerId;
 
     private String borrowerName;
     private String borrowedBook;

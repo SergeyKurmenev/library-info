@@ -55,13 +55,15 @@ public class DBPrepareHelper implements CommandLineRunner {
         populate(borrowInfoCsvPath,
                 borrowedInfoRepository,
                 Converters.STRING_ARRAY_TO_BORROW_INFO,
-                BorrowInfo.class.getDeclaredFields().length - 1);
+                BorrowInfo.class.getDeclaredFields().length - 2);
+        //match user to borrow-info and add additional foreign key to BORROW_INFO table
+        setupBorrowerId();
     }
 
-    public <T> void populate(String csvPath,
-                             JpaRepository<T, Long> repository,
-                             Function<String[], T> converter,
-                             int columNumber)
+    private <T> void populate(String csvPath,
+                              JpaRepository<T, Long> repository,
+                              Function<String[], T> converter,
+                              int columNumber)
             throws IOException, CsvException {
         Resource resource = new ClassPathResource(csvPath);
         CSVReader reader = new CSVReader(new InputStreamReader(resource.getInputStream()));
@@ -83,4 +85,15 @@ public class DBPrepareHelper implements CommandLineRunner {
         }
         repository.saveAll(entities);
     }
+
+    private void setupBorrowerId() {
+        List<BorrowInfo> allInfo = borrowedInfoRepository.findAll();
+        allInfo.forEach(info -> {
+            String[] nameParts = info.getBorrowerName().split(",");
+            userRepository.getUserByFirstNameAndSurName(nameParts[1], nameParts[0])
+                    .ifPresent(user -> info.setBorrowerId(user.getId()));
+        });
+        borrowedInfoRepository.saveAll(allInfo);
+    }
+
 }
