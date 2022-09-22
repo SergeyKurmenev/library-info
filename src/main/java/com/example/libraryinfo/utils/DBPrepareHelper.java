@@ -9,6 +9,7 @@ import com.example.libraryinfo.repositories.UserRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.io.ClassPathResource;
@@ -23,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class DBPrepareHelper implements CommandLineRunner {
@@ -70,7 +72,13 @@ public class DBPrepareHelper implements CommandLineRunner {
         while (rowIterator.hasNext()) {
             String[] row = rowIterator.next();
             if (row.length == columNumber) {
-                entities.add(converter.apply(row));
+                try {
+                    entities.add(converter.apply(row));
+                } catch (RuntimeException e) {
+                    // used only for get rid of rows with empty values in source csv
+                    // to prevent creation entities with empty fields
+                    log.debug("Cannot convert provided row to target entity", e);
+                }
             }
         }
         repository.saveAll(entities);

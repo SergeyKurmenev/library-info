@@ -20,13 +20,17 @@ public class Converters {
                     .gender(row[4])
                     .build();
 
-    public static final Function<String[], Book> STRING_ARRAY_TO_BOOK = row ->
-            Book.builder()
-                    .title(row[0])
-                    .author(row[1])
-                    .genre(row[2])
-                    .publisher(row[3])
-                    .build();
+    public static final Function<String[], Book> STRING_ARRAY_TO_BOOK = row -> {
+        Book book = Book.builder()
+                .title(row[0])
+                .author(row[1])
+                .genre(row[2])
+                .publisher(row[3])
+                .build();
+        if (book.getTitle().isBlank()) throw new RuntimeException("Book cannot exists without title");
+        return book;
+    };
+
     public static final Function<String[], BorrowInfo> STRING_ARRAY_TO_BORROW_INFO = row ->
             BorrowInfo.builder()
                     .borrowerName(row[0])
