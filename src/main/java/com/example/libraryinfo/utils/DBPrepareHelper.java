@@ -1,6 +1,8 @@
 package com.example.libraryinfo.utils;
 
+import com.example.libraryinfo.entities.Book;
 import com.example.libraryinfo.entities.User;
+import com.example.libraryinfo.repositories.BookRepository;
 import com.example.libraryinfo.repositories.UserRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
@@ -30,13 +32,20 @@ public class DBPrepareHelper implements CommandLineRunner {
     private String borrowInfoCsvPath;
 
     private final UserRepository userRepository;
+    private final BookRepository bookRepository;
 
     @Override
     public void run(String... args) throws Exception {
+        // populate USERS table
         populate(usersCsvPath,
                 userRepository,
                 Converters.STRING_ARRAY_TO_USER,
                 User.class.getDeclaredFields().length - 1);
+        // populate BOOKS table
+        populate(booksCsvPath,
+                bookRepository,
+                Converters.STRING_ARRAY_TO_BOOK,
+                Book.class.getDeclaredFields().length - 1);
     }
 
     public <T> void populate(String csvPath,

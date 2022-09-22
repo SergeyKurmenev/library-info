@@ -1,5 +1,6 @@
 package com.example.libraryinfo.utils;
 
+import com.example.libraryinfo.entities.Book;
 import com.example.libraryinfo.entities.User;
 
 import java.time.LocalDate;
@@ -16,5 +17,13 @@ public class Converters {
                     .membershipStart(LocalDate.parse(row[2], DATE_TIME_FORMATTER))
                     .membershipEnd(row[3].isBlank() ? null : LocalDate.parse(row[3], DATE_TIME_FORMATTER))
                     .gender(row[4])
+                    .build();
+
+    public static final Function<String[], Book> STRING_ARRAY_TO_BOOK = row ->
+            Book.builder()
+                    .title(row[0])
+                    .author(row[1])
+                    .genre(row[2])
+                    .publisher(row[3])
                     .build();
 }
