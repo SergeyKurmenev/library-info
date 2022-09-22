@@ -3,9 +3,7 @@ package com.example.libraryinfo.controllers;
 import com.example.libraryinfo.entities.User;
 import com.example.libraryinfo.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +16,11 @@ public class UserController {
     @GetMapping("/real")
     public List<User> getRealUsers() {
         return userService.getRealUsers();
+    }
+
+    @PostMapping("/borrowers-on-date")
+    public List<User> getUsersWhoBorrowedOnGivenDate(@RequestBody String date) {
+        return userService.getUsersWhoBorrowedOnGivenDate(date);
     }
 
 }
