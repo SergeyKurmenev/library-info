@@ -73,7 +73,7 @@ public class UserControllerTest {
                         .content(borrowedDate))
                 .andDo(print())
                 .andExpect(status().isOk())
-                // then: one user should appear in results
+                // then: one particular user should appear in results
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$.[0].surName", is("Zhungwang")))
                 .andExpect(jsonPath("$.[0].firstName", is("Noah")));
@@ -89,7 +89,7 @@ public class UserControllerTest {
                         .content(borrowedDate))
                 .andDo(print())
                 .andExpect(status().isOk())
-                // then: one user should appear in results
+                // then: one particular user should appear in results
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$.[0].surName", is("Zhungwang")))
                 .andExpect(jsonPath("$.[0].firstName", is("Noah")));
