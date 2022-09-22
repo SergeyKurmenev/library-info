@@ -1,6 +1,7 @@
 package com.example.libraryinfo.utils;
 
 import com.example.libraryinfo.entities.Book;
+import com.example.libraryinfo.entities.BorrowInfo;
 import com.example.libraryinfo.entities.User;
 
 import java.time.LocalDate;
@@ -25,5 +26,12 @@ public class Converters {
                     .author(row[1])
                     .genre(row[2])
                     .publisher(row[3])
+                    .build();
+    public static final Function<String[], BorrowInfo> STRING_ARRAY_TO_BORROW_INFO = row ->
+            BorrowInfo.builder()
+                    .borrowerName(row[0])
+                    .borrowedBook(row[1])
+                    .pickupDate(LocalDate.parse(row[2], DATE_TIME_FORMATTER))
+                    .returnDate(LocalDate.parse(row[3], DATE_TIME_FORMATTER))
                     .build();
 }
